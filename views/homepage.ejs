@@ -1,34 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MY FIRST CHAT APP</title>
-    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
 </head>
 <body>
-    <h1></h1>
-    <div id="chat-box" style="height: 300px; 
-                       overflow-y: scroll; 
-                       border: 1px solid #ccc; 
-                       padding: 10px;"></div>
-                       
-    <input type='text' class="sendme" id="messageInput">
-    <button onclick='sendMessage()'>SEND</button>
+    <h1>Welcome to the Chat App</h1>
+    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <input type="text" class="sendme" id="messageInput">
+    <button onclick="sendMessage()">SEND</button>
 
+    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
     <script>
         const userName = prompt('Kindly insert your username');
-        document.querySelector('h1').innerHTML = `Hello ${userName} welcome to my chatApp, feel free to mingle with me`;
-        const socket = io('https://chatapp-rwoh.onrender.com')
-        socket.on('message', () => {
-            socket.emit('newUser', userName);
-        });
+        document.querySelector('h1').innerHTML =` Hello ${userName}, welcome to my chatApp. Feel free to mingle with me`
+        const socket = io("http://localhost:9999")
+
+        socket.emit('newUser', userName)
 
         socket.on('chatMessage', (data) => {
-            displayMessage(data);
+            if (data.user !== userName) {
+                displayMessage(data)
+            }
         });
 
         const sendMessage = () => {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value;
+            const messageInput = document.getElementById('messageInput')
+            const message = messageInput.value
 
             if (message.trim() !== '') {
                 const data = {
@@ -36,38 +35,20 @@
                     message: message
                 };
 
-                socket.emit('chatMessage', data);
+                socket.emit('chatMessage', data)
 
-                displayMessage(data);
-
-                messageInput.value = '';
+                messageInput.value = ''
             }
         };
 
         const displayMessage = (data) => {
-            const chatBox = document.getElementById('chat-box');
-            const messageDiv = document.createElement('div');
+            const chatBox = document.getElementById('chat-box')
+            const messageDiv = document.createElement('div')
             messageDiv.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
-            chatBox.appendChild(messageDiv);
+            chatBox.appendChild(messageDiv)
 
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight
         };
     </script>
 </body>
 </html>
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
