@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MY FIRST CHAT APP</title>
+    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1></h1>
+    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"></div>
+    <input type='text' class="sendme" id="messageInput">
+    <button onclick='sendMessage()'>SEND</button>
+
+    <script>
+        const userName = prompt('Kindly insert your username');
+        document.querySelector('h1').innerHTML = `Hello ${userName}`;
+        const socket = io('http://localhost:9999');
+
+        socket.on('connect', () => {
+            // Notify the server about the new user
+            socket.emit('newUser', userName);
+        });
+
+        socket.on('chatMessage', (data) => {
+            displayMessage(data);
+        });
+
+        const sendMessage = () => {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+
+            if (message.trim() !== '') {
+                const data = {
+                    user: userName,
+                    message: message
+                };
+
+                // Emit the message to the server
+                socket.emit('chatMessage', data);
+
+                // Display the sent message
+                displayMessage(data);
+
+                // Clear the input field
+                messageInput.value = '';
+            }
+        };
+
+        const displayMessage = (data) => {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
+            chatBox.appendChild(messageDiv);
+
+            // Scroll to the bottom to show the latest message
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>MY FIRST CHAT APP</title>
+        <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <h1></h1>
+        <input type = 'text' class="sendme">
+        <button onclick = 'chatFunc()'>SEND</button>
+
+
+        <script>
+            const userName =prompt('kindly insert your username')
+            document.querySelector('h1').innerHTML = `Hello ${userName}`
+            const socket= io('http://localhost:9999')
+            socket.on('connection',(data)=>{
+                document.querySelector('h2').innerHTML=data
+
+            })
+            const chatFunc=()=>{
+                const sentMsg =document.querySelector('.sendme').value
+                console.log(sentMsg)
+            }
+            
+                </script>
+    </body>
+</html> -->
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<
