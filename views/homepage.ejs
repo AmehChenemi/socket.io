@@ -15,7 +15,7 @@
     <script>
         const userName = prompt('Kindly insert your username');
         document.querySelector('h1').innerHTML =` Hello ${userName}, welcome to my chatApp. Feel free to mingle with me`
-        const socket = io("http://localhost:9999")
+        const socket = io("https://chatapp-rwoh.onrender.com")
 
         socket.emit('newUser', userName)
 
